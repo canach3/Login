@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 홈</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 0.5rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .login-message {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #333;
+            color: white;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>FoH 전용 홈페이지입니다.</h1>
+</header>
+<nav>
+    <a href="/">홈</a>
+    <a href="/post/list">게시판</a>
+    <a href="/member/save">회원가입</a>
+    <a href="/auth/login">로그인</a>
+</nav>
+<main>
+    <p class="login-message">게시물을 작성하려면 회원가입 후 로그인하세요!</p>
+    <div>
+        <h2>공지사항</h2>
+        <p>최신 공지사항 내용을 여기에 추가하세요.</p>
+    </div>
+    <div>
+        <h2>커뮤니티 소개</h2>
+        <p>이 커뮤니티는 FoH 회원들끼리 정보를 공유하고 소통하는 공간입니다.</p>
+    </div>
+</main>
+<footer>
+    &copy; 2024 우리 커뮤니티. All rights reserved.
+</footer>
+</body>
+</html>

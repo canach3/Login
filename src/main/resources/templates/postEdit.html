@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 2rem;
+            position: relative;
+        }
+        .header-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+        }
+        .header-buttons a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            background: #555;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .header-buttons a:hover {
+            background: #777;
+        }
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+        input[type="submit"] {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>게시글 수정</h1>
+    <div class="header-buttons">
+        <a href="/">홈</a>
+        <a href="/auth/logout">로그아웃</a>
+    </div>
+</header>
+<main>
+    <form th:action="@{/post/edit/{id}(id=${post.id})}" method="post">
+        <!-- 게시글 ID를 hidden 필드로 전달 -->
+        <input type="hidden" name="id" th:value="${post.id}">
+
+        <label for="title">제목:</label>
+        <!-- 기존 제목을 입력 필드에 표시 -->
+        <input type="text" id="title" name="title" th:value="${post.title}" required>
+
+        <label for="body">내용:</label>
+        <!-- 기존 내용을 텍스트박스에 표시 -->
+        <textarea id="body" name="body" th:text="${post.body}" required></textarea>
+
+        <label for="isPublic">공개 여부:</label>
+        <input type="checkbox" id="isPublic" name="isPublic" checked> 공개
+
+        <input type="submit" value="수정">
+    </form>
+</main>
+</body>
+</html>
