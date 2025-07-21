@@ -1,7 +1,7 @@
 package boardProject.board.member.entity;
 
 import boardProject.board.post.entity.Post;
-import boardProject.board.member.dto.MemberSaveReq;
+import boardProject.board.member.dto.MemberSignUpRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,14 +34,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Post> session = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<Post> session = new ArrayList<>();
 
-    public static Member toMember(MemberSaveReq memberSaveReq) {
+    public static Member toMember(MemberSignUpRequest memberSaveReq, String encodedPassword) {
         Member member = new Member();
-        member.setLoginId(memberSaveReq.getLoginId());
-        member.setPassword(memberSaveReq.getPassword());
-        member.setName(memberSaveReq.getName());
+        member.setLoginId(memberSaveReq.loginId());
+        member.setPassword(encodedPassword);
+        member.setName(memberSaveReq.name());
 
         return member;
     }
