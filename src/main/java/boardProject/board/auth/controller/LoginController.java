@@ -4,11 +4,13 @@ import boardProject.board.auth.dto.LoginRequest;
 import boardProject.board.auth.dto.LoginResponse;
 import boardProject.board.auth.service.LoginService;
 import boardProject.board.common.response.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static boardProject.board.common.code.SuccessCode.NO_CONTENT;
 import static boardProject.board.common.code.SuccessCode.OK;
 
 @RestController
@@ -23,5 +25,11 @@ public class LoginController {
         LoginResponse loginResponse = loginService.login(loginRequest, response);
 
         return ResponseEntity.ok(ApiResponse.success(OK, loginResponse));
+    }
+    @GetMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request) {
+        loginService.logout(request);
+
+        return ResponseEntity.ok(ApiResponse.success(NO_CONTENT));
     }
 }
