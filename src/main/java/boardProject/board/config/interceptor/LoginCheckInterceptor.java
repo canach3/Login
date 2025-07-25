@@ -2,23 +2,21 @@ package boardProject.board.config.interceptor;
 
 import boardProject.board.auth.entity.Session;
 import boardProject.board.auth.exception.UnAuthorizedAccessException;
+import boardProject.board.auth.model.LoginMember;
 import boardProject.board.auth.service.SessionManager;
-import boardProject.board.member.dto.MemberInfoResponse;
 import boardProject.board.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.time.LocalDateTime;
 
 @Component
+@RequiredArgsConstructor
 public class LoginCheckInterceptor implements HandlerInterceptor {
     private final SessionManager sessionManager;
-
-    public LoginCheckInterceptor(SessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -32,8 +30,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             throw new UnAuthorizedAccessException();
         }
 
-        MemberInfoResponse memberInfoResponse = new MemberInfoResponse(member.getLoginId(), member.getName());
-        request.setAttribute("loginMemberInfo", memberInfoResponse);
+        LoginMember loginMember = new LoginMember(member.getId());
+        request.setAttribute("loginMember", loginMember);
         return true;
     }
 }
