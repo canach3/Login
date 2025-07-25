@@ -26,9 +26,9 @@ public class LoginController {
 
         return ResponseEntity.ok(ApiResponse.success(OK, loginResponse));
     }
-    @GetMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request) {
-        loginService.logout(request);
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
+        loginService.logout(request, response);
 
         return ResponseEntity.ok(ApiResponse.success(NO_CONTENT));
     }
