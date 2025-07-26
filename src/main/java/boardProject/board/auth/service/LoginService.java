@@ -31,11 +31,22 @@ public class LoginService {
             throw new InvalidLoginInfoException();
         }
 
+        Session session = sessionManager.createSession(member);
+        Cookie cookie = new Cookie(SESSION_COOKIE_NAME, session.getSessionId());
+        cookie.setPath("/");  // 모든 경로에서 쿠키가 유효하도록 설정
+        response.addCookie(cookie);
+
         return new LoginResponse(member.getLoginId());
     }
 
     @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        sessionManager.expire(request, response);
+        sessionManager.expire(request);
+
+        // 쿠키 삭제
+        Cookie expiredCookie = new Cookie(SessionManager.SESSION_COOKIE_NAME, null);
+        expiredCookie.setPath("/");
+        expiredCookie.setMaxAge(0); // 즉시 만료
+        response.addCookie(expiredCookie);
     }
 }
