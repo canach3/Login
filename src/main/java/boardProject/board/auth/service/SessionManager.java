@@ -6,6 +6,7 @@ import boardProject.board.member.entity.Member;
 import boardProject.board.member.repository.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -53,15 +54,21 @@ public class SessionManager {
         return memberRepository.findById(memberId).orElse(null);
     }
 
-    public void expire(HttpServletRequest request) {
+    public void expire(HttpServletRequest request, HttpServletResponse response) {
         Cookie sessionCookie = findCookie(request, SESSION_COOKIE_NAME);
         if (sessionCookie != null) {
             sessionRepository.deleteBySessionId(sessionCookie.getValue());
         }
+
+        // 쿠키 삭제
+        Cookie expiredCookie = new Cookie(SessionManager.SESSION_COOKIE_NAME, null);
+        expiredCookie.setPath("/");
+        expiredCookie.setMaxAge(0); // 즉시 만료
+        response.addCookie(expiredCookie);
     }
 
     @Transactional
-    @Scheduled(cron = "0 */30 * * * *") // 30분마다 실행 (초 분 시 일 월 요일)
+    @Scheduled(cron = "* 0/30 * * * *") // 30분마다 실행 (초 분 시 일 월 요일)
     public void removeExpiredSessions() {
         LocalDateTime now = LocalDateTime.now();
         sessionRepository.deleteByExpiredDateTimeBefore(now);
@@ -78,6 +85,4 @@ public class SessionManager {
                 .findAny()
                 .orElse(null);
     }
-
-
 }
