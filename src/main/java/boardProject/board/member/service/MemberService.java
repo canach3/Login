@@ -1,12 +1,16 @@
 package boardProject.board.member.service;
 
+import boardProject.board.member.dto.MemberInfoResponse;
 import boardProject.board.member.dto.MemberSignUpRequest;
 import boardProject.board.member.entity.Member;
 import boardProject.board.member.exception.DuplicateMemberException;
+import boardProject.board.member.exception.MemberNotFoundException;
 import boardProject.board.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +26,11 @@ public class MemberService {
         String encodedPassword = BCrypt.hashpw(memberSaveRequest.password(), BCrypt.gensalt());
         Member member = Member.toMember(memberSaveRequest, encodedPassword);
         memberRepository.save(member);
+    }
+
+    public MemberInfoResponse getMyInfo(long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+
+        return new MemberInfoResponse(member.getLoginId(), member.getName());
     }
 }
