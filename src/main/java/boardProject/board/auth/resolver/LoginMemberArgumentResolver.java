@@ -16,7 +16,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        // @LoginMember 애노테이션이 붙었고, 타입이 LoginMember일 때만 처리
+        // @CurrentUser 애노테이션이 붙었고, 타입이 LoginMember일 때만 처리
         return parameter.hasParameterAnnotation(CurrentUser.class)
                 && parameter.getParameterType().equals(LoginMember.class);
     }
