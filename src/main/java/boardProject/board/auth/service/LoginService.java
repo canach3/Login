@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static boardProject.board.auth.service.SessionManager.SESSION_COOKIE_NAME;
@@ -22,12 +22,13 @@ import static boardProject.board.auth.service.SessionManager.SESSION_COOKIE_NAME
 public class LoginService {
     private final MemberRepository memberRepository;
     private final SessionManager sessionManager;
+    private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         Member member = memberRepository.findByLoginId(loginRequest.loginId())
                 .orElseThrow(MemberNotFoundException::new);
 
-        if (!BCrypt.checkpw(loginRequest.password(), member.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.password(), member.getPassword())) {
             throw new InvalidLoginInfoException();
         }
 
