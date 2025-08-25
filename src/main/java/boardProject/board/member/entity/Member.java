@@ -27,6 +27,9 @@ public class Member {
     @Column
     private String name;
 
+    @Column
+    private String role;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdDt_M;
@@ -42,6 +45,7 @@ public class Member {
         member.setLoginId(memberSaveReq.loginId());
         member.setPassword(encodedPassword);
         member.setName(memberSaveReq.name());
+        member.setRole("ROLE_USER");
 
         return member;
     }
