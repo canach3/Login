@@ -27,7 +27,6 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MemberInfoResponse>> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         MemberInfoResponse memberInfoResponse = memberService.getMyInfo(userDetails.getId());
-
         return ResponseEntity.ok(ApiResponse.success(OK,memberInfoResponse));
     }
 }
