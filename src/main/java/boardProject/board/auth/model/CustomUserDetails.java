@@ -1,33 +1,41 @@
 package boardProject.board.auth.model;
 
-import boardProject.board.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private final Member member;
+    private final Long id;
+    private final String loginId;
+    private final String password;
+    private final List<SimpleGrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 권한을 사용하지 않기 때문에 빈 리스트 리턴
-        return Collections.emptyList();
+        return authorities; // SimpleGrantedAuthority는 Serializable
     }
 
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return member.getLoginId();
+        return loginId;
     }
 
-    public long getId() {return member.getId();}
+    public long getId() {
+        return id;
+    }
 }
