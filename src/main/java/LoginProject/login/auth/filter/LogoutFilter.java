@@ -23,9 +23,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class LogoutFilter extends OncePerRequestFilter {
-
     private final SecurityContextRepository securityContextRepository;
-    private final ApiResponseWriter responseWriter;
 
     // 기본 매핑: POST /api/auth/logout
     @Override
@@ -65,11 +63,11 @@ public class LogoutFilter extends OncePerRequestFilter {
             securityContextRepository.saveContext(empty, request, response);
 
             // 5) 응답 바디 - GlobalExceptionHandler는 필터 단계의 예외를 자동 처리하지 않으므로 직접 구현
-            responseWriter.write(response, SuccessCode.OK.getStatusValue(), ApiResponse.success(SuccessCode.OK));
+            ApiResponseWriter.write(response, SuccessCode.OK.getStatusValue(), ApiResponse.success(SuccessCode.OK));
         } catch (Exception e) {
             ApiResponse<?> body = ApiResponse.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
             try {
-                responseWriter.write(response, CommonErrorCode.INTERNAL_SERVER_ERROR.getStatusValue(), body);
+                ApiResponseWriter.write(response, CommonErrorCode.INTERNAL_SERVER_ERROR.getStatusValue(), body);
             } catch (IOException ioException) {
                 throw new RuntimeException("로그아웃 요청 에러 응답 작성중 문제 발생", ioException);
             }

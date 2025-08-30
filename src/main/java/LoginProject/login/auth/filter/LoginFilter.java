@@ -29,7 +29,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final SecurityContextRepository securityContextRepository;
-    private final ApiResponseWriter responseWriter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -70,7 +69,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         securityContextRepository.saveContext(context, request, response);
 
         ApiResponse<?> body = ApiResponse.success(SuccessCode.OK);
-        responseWriter.write(response, SuccessCode.OK.getStatusValue(), body);
+        ApiResponseWriter.write(response, SuccessCode.OK.getStatusValue(), body);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // 실패 유형별로 커스텀 에러코드 매핑
         ResponseCode errorCode = mapToErrorCode(failed);
         ApiResponse<?> body = ApiResponse.fail(errorCode);
-        responseWriter.write(response, errorCode.getStatusValue(), body);
+        ApiResponseWriter.write(response, errorCode.getStatusValue(), body);
     }
 
     private ResponseCode mapToErrorCode(AuthenticationException ex) {

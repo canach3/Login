@@ -17,13 +17,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ApiResponseWriter responseWriter;
 
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         ResponseCode code = AuthErrorCode.UNAUTHORIZED_ACCESS;
-        responseWriter.write(response, code.getStatusValue(), ApiResponse.fail(code));
+        ApiResponseWriter.write(response, code.getStatusValue(), ApiResponse.fail(code));
     }
 }

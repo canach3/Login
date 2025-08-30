@@ -3,7 +3,7 @@ package LoginProject.login.auth.security.config;
 import LoginProject.login.auth.filter.LoginFilter;
 import LoginProject.login.auth.filter.LogoutFilter;
 import LoginProject.login.auth.security.CustomAuthenticationEntryPoint;
-import LoginProject.login.common.response.ApiResponseWriter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,12 +20,14 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @Configuration
+@RequiredArgsConstructor
 // Spring Session JDBC 활성화(세션 유효시간 : 20초, 5초마다 만료 세션 정리)
 @EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 20, cleanupCron = "*/5 * * * * *")
 public class SecurityConfig {
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-                                           CustomAuthenticationEntryPoint authenticationEntryPoint,
                                            SecurityContextRepository securityContextRepository,
                                            LoginFilter loginFilter,
                                            LogoutFilter logoutFilter) throws Exception {
@@ -73,9 +75,8 @@ public class SecurityConfig {
 
     @Bean
     public LoginFilter loginFilter(AuthenticationManager authenticationManager,
-                                   SecurityContextRepository securityContextRepository,
-                                   ApiResponseWriter responseWriter) {
-        LoginFilter filter = new LoginFilter(securityContextRepository, responseWriter);
+                                   SecurityContextRepository securityContextRepository) {
+        LoginFilter filter = new LoginFilter(securityContextRepository);
 
         // UsernamePasswordAuthenticationFilter의 기본 처리 URL(/login)을 API 경로에 맞게 변경
         filter.setFilterProcessesUrl("/api/auth/login");
@@ -87,8 +88,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public LogoutFilter logoutFilter(SecurityContextRepository securityContextRepository,
-                                     ApiResponseWriter responseWriter) {
-        return new LogoutFilter(securityContextRepository, responseWriter);
+    public LogoutFilter logoutFilter(SecurityContextRepository securityContextRepository) {
+        return new LogoutFilter(securityContextRepository);
     }
 }
