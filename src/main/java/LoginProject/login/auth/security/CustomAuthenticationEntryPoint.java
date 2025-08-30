@@ -16,8 +16,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
