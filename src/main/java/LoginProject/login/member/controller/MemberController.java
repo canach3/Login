@@ -19,14 +19,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<Void>> signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
+    public ApiResponse<Void> signUp(@RequestBody MemberSignUpRequest memberSignUpRequest) {
         memberService.save(memberSignUpRequest);
-        return ResponseEntity.ok(ApiResponse.success(NO_CONTENT));
+        return ApiResponse.success(NO_CONTENT);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<MemberInfoResponse>> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ApiResponse<MemberInfoResponse> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         MemberInfoResponse memberInfoResponse = memberService.getMyInfo(userDetails.getId());
-        return ResponseEntity.ok(ApiResponse.success(OK,memberInfoResponse));
+        return ApiResponse.success(OK,memberInfoResponse);
     }
 }
