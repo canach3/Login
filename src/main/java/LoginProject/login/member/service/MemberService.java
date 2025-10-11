@@ -2,7 +2,6 @@ package LoginProject.login.member.service;
 
 import LoginProject.login.member.dto.MemberSignUpRequest;
 import LoginProject.login.member.entity.Member;
-import LoginProject.login.member.exception.DuplicateMemberException;
 import LoginProject.login.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
@@ -16,7 +15,8 @@ public class MemberService {
 
     public void save(MemberSignUpRequest memberSaveRequest) {
         if (memberRepository.existsByLoginId(memberSaveRequest.loginId())) {
-            throw new DuplicateMemberException();
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+
         }
 
         String encodedPassword = BCrypt.hashpw(memberSaveRequest.password(), BCrypt.gensalt());
